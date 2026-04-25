@@ -7,6 +7,10 @@ const props = defineProps({
   historyCount: {
     type: Number,
     default: 0
+  },
+  isReady: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -24,7 +28,12 @@ const emit = defineEmits(['reset', 'save', 'toggle-history'])
         重新测评
       </button>
       
-      <button class="btn btn-primary btn-lg action-btn" @click="$emit('save')">
+      <button 
+        class="btn btn-primary btn-lg action-btn" 
+        :class="{ disabled: !isReady }"
+        :disabled="!isReady"
+        @click="$emit('save')"
+      >
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
           <polyline points="17 21 17 13 7 13 7 21" />
@@ -76,6 +85,18 @@ const emit = defineEmits(['reset', 'save', 'toggle-history'])
   gap: 8px;
 }
 
+.action-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.action-btn.disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
 .btn-icon {
   width: 20px;
   height: 20px;
@@ -85,47 +106,50 @@ const emit = defineEmits(['reset', 'save', 'toggle-history'])
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 12px 20px;
+  gap: 10px;
+  padding: 14px 20px;
   background: var(--bg-primary);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-lg);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-bounce);
   font-family: inherit;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
+  font-weight: 600;
 }
 
 .history-toggle-btn:hover {
   border-color: var(--primary-light);
   background: var(--primary-bg);
   color: var(--primary-dark);
+  transform: translateY(-1px);
 }
 
 .history-toggle-btn.active {
   border-color: var(--primary-color);
-  background: linear-gradient(135deg, rgba(82, 196, 26, 0.05) 0%, rgba(149, 222, 100, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(82, 201, 169, 0.06) 0%, rgba(131, 217, 194, 0.03) 100%);
   color: var(--primary-dark);
 }
 
 .toggle-icon {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 }
 
 .toggle-text {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .toggle-badge {
   padding: 2px 8px;
-  background: var(--primary-color);
+  background: var(--primary-gradient);
   color: white;
   border-radius: var(--radius-full);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1;
+  box-shadow: 0 2px 8px rgba(82, 201, 169, 0.3);
 }
 
 .toggle-arrow {

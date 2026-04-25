@@ -3,6 +3,10 @@ const props = defineProps({
   age: {
     type: [String, Number],
     default: ''
+  },
+  error: {
+    type: String,
+    default: null
   }
 })
 
@@ -35,8 +39,8 @@ function handleInput(event) {
     </div>
     
     <div class="input-group">
-      <div class="input-wrapper">
-        <span class="input-icon">
+      <div class="input-wrapper" :class="{ 'has-error': error }">
+        <span class="input-icon" :class="{ 'error-icon': error }">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="8" r="4" />
             <path d="M12 14v8M8 22h8" />
@@ -51,9 +55,11 @@ function handleInput(event) {
           max="120"
           @input="handleInput"
         />
-        <span class="input-suffix">岁</span>
+        <span class="input-suffix" :class="{ 'error-suffix': error }">岁</span>
       </div>
-      <p class="input-hint">年龄范围：1-120岁</p>
+      <p class="input-hint" :class="{ 'error-hint': error }">
+        年龄范围：1-120岁
+      </p>
     </div>
     
     <div class="quick-age">
@@ -86,6 +92,7 @@ function handleInput(event) {
   font-size: var(--font-size-xs);
   color: var(--text-tertiary);
   margin-bottom: 8px;
+  font-weight: 500;
 }
 
 .quick-age-buttons {
@@ -95,15 +102,15 @@ function handleInput(event) {
 }
 
 .quick-age-btn {
-  padding: 8px 16px;
+  padding: 10px 18px;
   font-size: var(--font-size-sm);
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-secondary);
   background: var(--bg-secondary);
-  border: 1px solid var(--border-light);
+  border: 2px solid var(--border-light);
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-bounce);
   font-family: inherit;
 }
 
@@ -111,18 +118,42 @@ function handleInput(event) {
   background: var(--primary-bg);
   border-color: var(--primary-light);
   color: var(--primary-dark);
+  transform: translateY(-1px);
 }
 
 .quick-age-btn.active {
-  background: var(--primary-color);
+  background: var(--primary-gradient);
   border-color: var(--primary-color);
   color: white;
-  box-shadow: 0 2px 8px rgba(82, 196, 26, 0.3);
+  box-shadow: 0 4px 16px rgba(82, 201, 169, 0.35);
+}
+
+.input-wrapper.has-error {
+  border-color: rgba(255, 120, 117, 0.5) !important;
+  background: linear-gradient(135deg, rgba(255, 120, 117, 0.05) 0%, rgba(255, 163, 158, 0.03) 100%) !important;
+}
+
+.input-wrapper.has-error:focus-within {
+  border-color: #ff7875 !important;
+  box-shadow: 0 0 0 4px rgba(255, 120, 117, 0.1) !important;
+}
+
+.error-icon {
+  color: #ff7875 !important;
+}
+
+.error-suffix {
+  color: #ff7875 !important;
+}
+
+.error-hint {
+  color: #cf1322 !important;
+  font-weight: 600;
 }
 
 @media (max-width: 375px) {
   .quick-age-btn {
-    padding: 6px 12px;
+    padding: 8px 14px;
     font-size: var(--font-size-xs);
   }
 }

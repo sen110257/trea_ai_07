@@ -1,4 +1,6 @@
 <script setup>
+import { computed, watch, ref, onMounted } from 'vue'
+
 const props = defineProps({
   percentage: {
     type: Number,
@@ -14,24 +16,83 @@ const props = defineProps({
   }
 })
 
-const ringSize = 160
-const strokeWidth = 12
+const ringSize = 200
+const strokeWidth = 16
 const radius = (ringSize - strokeWidth) / 2
 const circumference = 2 * Math.PI * radius
 
-function hexToRgb(hex) {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-  if (result) {
-    return `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+const animatedPercentage = ref(0)
+const animationFrame = ref(null)
+
+const gradientId = computed(() => `ring-gradient-${Math.random().toString(36).substr(2, 9)}`)
+
+const currentGradient = computed(() => {
+  if (!props.bmiLevel) {
+    return {
+      start: '#83d9c2',
+      end: '#52c9a9'
+    }
   }
-  return '82, 196, 26'
+  return {
+    start: props.bmiLevel.colorLight || props.bmiLevel.color,
+    end: props.bmiLevel.color
+  }
+})
+
+function animatePercentage(from, to, duration = 1200) {
+  if (animationFrame.value) {
+    cancelAnimationFrame(animationFrame.value)
+  }
+  
+  const startValue = from
+  const targetValue = to
+  const startTime = performance.now()
+  
+  function animate(currentTime) {
+    const elapsed = currentTime - startTime
+    const progress = Math.min(elapsed / duration, 1)
+    
+    const easeOutCubic = 1 - Math.pow(1 - progress, 3)
+    const currentValue = startValue + (targetValue - startValue) * easeOutCubic
+    
+    animatedPercentage.value = currentValue
+    
+    if (progress < 1) {
+      animationFrame.value = requestAnimationFrame(animate)
+    }
+  }
+  
+  animationFrame.value = requestAnimationFrame(animate)
 }
+
+const strokeDashoffset = computed(() => {
+  return circumference - (animatedPercentage.value / 100) * circumference
+})
+
+watch([() => props.percentage], ([newPercentage], [oldPercentage]) => {
+  if (newPercentage !== undefined) {
+    animatePercentage(animatedPercentage.value, newPercentage)
+  }
+}, { immediate: false })
+
+onMounted(() => {
+  if (props.percentage > 0) {
+    animatePercentage(0, props.percentage)
+  }
+})
 </script>
 
 <template>
   <div class="progress-ring-wrapper">
     <div class="progress-ring">
       <svg class="progress-ring-svg" :viewBox="`0 0 ${ringSize} ${ringSize}`">
+        <defs>
+          <linearGradient :id="gradientId" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" :style="`stop-color: ${currentGradient.start}; stop-opacity: 1`" />
+            <stop offset="100%" :style="`stop-color: ${currentGradient.end}; stop-opacity: 1`" />
+          </linearGradient>
+        </defs>
+        
         <circle
           class="progress-ring-bg"
           :cx="ringSize / 2"
@@ -39,24 +100,43 @@ function hexToRgb(hex) {
           :r="radius"
           :stroke-width="strokeWidth"
         />
+        
         <circle
           class="progress-ring-fill"
           :cx="ringSize / 2"
           :cy="ringSize / 2"
           :r="radius"
           :stroke-width="strokeWidth"
-          :stroke="bmiLevel?.color || '#52c41a'"
+          :stroke="`url(#${gradientId})`"
           :stroke-dasharray="circumference"
-          :stroke-dashoffset="circumference - (percentage / 100) * circumference"
+          :stroke-dashoffset="strokeDashoffset"
+          :style="{
+            filter: `drop-shadow(0 4px 12px ${bmiLevel?.color || '#52c9a9'}50)`
+          }"
         />
       </svg>
       
       <div class="progress-ring-text">
-        <div class="ring-bmi-value" :style="{ color: bmiLevel?.color || '#52c41a' }">
-          {{ bmi || '--' }}
+        <div 
+          class="ring-bmi-value" 
+          :style="{ 
+            color: bmiLevel?.color || '#52c9a9',
+            textShadow: `0 4px 20px ${bmiLevel?.color || '#52c9a9'}40`
+          }"
+        >
+          {{ bmi !== null ? Number(bmi).toFixed(1) : '--' }}
         </div>
         <div class="ring-bmi-label">BMI 指数</div>
-        <div class="ring-level-badge" v-if="bmiLevel" :style="{ backgroundColor: `rgba(${hexToRgb(bmiLevel.color)}, 0.1)`, color: bmiLevel.color }">
+        <div 
+          v-if="bmiLevel" 
+          class="ring-level-badge" 
+          :style="{ 
+            backgroundColor: `linear-gradient(135deg, ${bmiLevel.color}20 0%, ${bmiLevel.color}10 100%)`,
+            color: bmiLevel.color,
+            borderColor: bmiLevel.color,
+            boxShadow: `0 4px 20px ${bmiLevel.color}40`
+          }"
+        >
           {{ bmiLevel.name }}
         </div>
       </div>
@@ -98,12 +178,11 @@ function hexToRgb(hex) {
   transform: rotate(-90deg);
   width: 100%;
   height: 100%;
-  filter: drop-shadow(0 4px 12px rgba(82, 201, 169, 0.15));
 }
 
 .progress-ring-bg {
   fill: none;
-  stroke: linear-gradient(135deg, #f0f0f0, #f8f8f8);
+  stroke: linear-gradient(135deg, #f5f5f5, #fafafa);
   stroke-width: 16;
   stroke-linecap: round;
 }
@@ -112,8 +191,7 @@ function hexToRgb(hex) {
   fill: none;
   stroke-width: 16;
   stroke-linecap: round;
-  transition: stroke-dashoffset 1s cubic-bezier(0.34, 1.56, 0.64, 1), stroke 0.5s ease;
-  filter: drop-shadow(0 2px 8px currentColor);
+  transition: stroke 0.6s ease;
 }
 
 .progress-ring-text {
@@ -131,7 +209,6 @@ function hexToRgb(hex) {
   font-weight: 800;
   line-height: 1;
   margin-bottom: 8px;
-  text-shadow: 0 4px 16px currentColor;
   letter-spacing: -2px;
 }
 
@@ -149,8 +226,7 @@ function hexToRgb(hex) {
   font-size: 15px;
   font-weight: 700;
   border-radius: var(--radius-full);
-  border: 2px solid currentColor;
-  box-shadow: 0 4px 16px currentColor;
+  border: 2px solid;
 }
 
 .ring-info {
