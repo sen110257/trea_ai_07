@@ -7,6 +7,10 @@ const props = defineProps({
   weight: {
     type: [String, Number],
     default: ''
+  },
+  errors: {
+    type: Object,
+    default: () => ({ height: null, weight: null })
   }
 })
 
@@ -49,8 +53,8 @@ function quickSelect(item) {
     <div class="input-row">
       <div class="input-group input-col">
         <label class="input-label">身高</label>
-        <div class="input-wrapper">
-          <span class="input-icon">
+        <div class="input-wrapper" :class="{ 'has-error': errors.height }">
+          <span class="input-icon" :class="{ 'error-icon': errors.height }">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="3" y="6" width="18" height="12" rx="2" />
               <path d="M7 2v4M17 2v4" />
@@ -62,20 +66,22 @@ function quickSelect(item) {
             class="input-field"
             :value="height"
             placeholder="请输入身高"
-            min="50"
-            max="250"
+            min="80"
+            max="230"
             step="0.1"
             @input="handleHeightInput"
           />
-          <span class="input-suffix">cm</span>
+          <span class="input-suffix" :class="{ 'error-suffix': errors.height }">cm</span>
         </div>
-        <p class="input-hint">范围：50-250cm</p>
+        <p class="input-hint" :class="{ 'error-hint': errors.height }">
+          范围：80-230cm
+        </p>
       </div>
       
       <div class="input-group input-col">
         <label class="input-label">体重</label>
-        <div class="input-wrapper">
-          <span class="input-icon">
+        <div class="input-wrapper" :class="{ 'has-error': errors.weight }">
+          <span class="input-icon" :class="{ 'error-icon': errors.weight }">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="5" r="3" />
               <path d="M12 8v8" />
@@ -87,14 +93,16 @@ function quickSelect(item) {
             class="input-field"
             :value="weight"
             placeholder="请输入体重"
-            min="10"
-            max="500"
+            min="20"
+            max="300"
             step="0.1"
             @input="handleWeightInput"
           />
-          <span class="input-suffix">kg</span>
+          <span class="input-suffix" :class="{ 'error-suffix': errors.weight }">kg</span>
         </div>
-        <p class="input-hint">范围：10-500kg</p>
+        <p class="input-hint" :class="{ 'error-hint': errors.weight }">
+          范围：20-300kg
+        </p>
       </div>
     </div>
     
@@ -138,21 +146,22 @@ function quickSelect(item) {
   font-size: var(--font-size-xs);
   color: var(--text-tertiary);
   margin-bottom: 8px;
+  font-weight: 500;
 }
 
 .quick-input-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  gap: 10px;
 }
 
 .quick-input-btn {
-  padding: 10px 12px;
+  padding: 12px 14px;
   background: var(--bg-secondary);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-lg);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-bounce);
   font-family: inherit;
   text-align: left;
 }
@@ -160,6 +169,8 @@ function quickSelect(item) {
 .quick-input-btn:hover {
   background: var(--primary-bg);
   border-color: var(--primary-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
 }
 
 .quick-input-btn:active {
@@ -169,15 +180,39 @@ function quickSelect(item) {
 .quick-input-label-text {
   display: block;
   font-size: var(--font-size-sm);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .quick-input-value {
   display: block;
   font-size: var(--font-size-xs);
   color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.input-wrapper.has-error {
+  border-color: rgba(255, 120, 117, 0.5) !important;
+  background: linear-gradient(135deg, rgba(255, 120, 117, 0.05) 0%, rgba(255, 163, 158, 0.03) 100%) !important;
+}
+
+.input-wrapper.has-error:focus-within {
+  border-color: #ff7875 !important;
+  box-shadow: 0 0 0 4px rgba(255, 120, 117, 0.1) !important;
+}
+
+.error-icon {
+  color: #ff7875 !important;
+}
+
+.error-suffix {
+  color: #ff7875 !important;
+}
+
+.error-hint {
+  color: #cf1322 !important;
+  font-weight: 600;
 }
 
 @media (max-width: 375px) {
@@ -187,11 +222,11 @@ function quickSelect(item) {
   }
   
   .quick-input-grid {
-    gap: 6px;
+    gap: 8px;
   }
   
   .quick-input-btn {
-    padding: 8px 10px;
+    padding: 10px 12px;
   }
 }
 </style>
