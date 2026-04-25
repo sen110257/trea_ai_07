@@ -128,76 +128,101 @@ function hexToRgb(hex) {
 
 <style scoped>
 .body-fat-section {
-  background: linear-gradient(135deg, #ffffff 0%, #fff7e6 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 245, 255, 0.95) 100%);
+  border: 1px solid rgba(105, 177, 255, 0.1);
 }
 
 .body-fat-display {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
-  padding: 16px;
+  margin-bottom: 24px;
+  padding: 24px;
   background: var(--bg-primary);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-lighter);
+  box-shadow: var(--shadow-sm);
 }
 
 .fat-value-circle {
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
-  border: 4px solid;
+  border: 5px solid;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 247, 230, 0.9) 100%);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 250, 255, 0.9) 100%);
+  box-shadow: 0 8px 24px currentColor;
+  position: relative;
+}
+
+.fat-value-circle::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(105, 177, 255, 0.08) 0%, rgba(82, 201, 169, 0.04) 100%);
 }
 
 .fat-value {
   display: flex;
   align-items: baseline;
-  gap: 2px;
+  gap: 4px;
+  position: relative;
+  z-index: 1;
 }
 
 .fat-number {
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 48px;
+  font-weight: 800;
   color: var(--text-primary);
   line-height: 1;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  letter-spacing: -2px;
 }
 
 .fat-unit {
-  font-size: 14px;
+  font-size: 18px;
   color: var(--text-tertiary);
+  font-weight: 600;
 }
 
 .fat-label {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-tertiary);
-  margin-top: 4px;
+  margin-top: 6px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
 }
 
 .fat-level-badge {
-  padding: 12px 24px;
-  border-radius: var(--radius-md);
-  border: 2px solid;
-  font-size: 18px;
-  font-weight: 600;
+  padding: 16px 28px;
+  border-radius: var(--radius-xl);
+  border: 3px solid;
+  font-size: 22px;
+  font-weight: 800;
+  box-shadow: 0 6px 20px currentColor;
+  backdrop-filter: blur(8px);
 }
 
 .body-fat-scale {
   background: var(--bg-secondary);
-  padding: 16px;
-  border-radius: var(--radius-md);
-  margin-bottom: 16px;
+  padding: 20px 24px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 20px;
+  border: 1px solid var(--border-lighter);
 }
 
 .scale-title {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
 }
 
 .scale-ranges {
@@ -210,67 +235,83 @@ function hexToRgb(hex) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12px;
+  padding: 16px;
   background: var(--bg-primary);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-lighter);
+  transition: all var(--transition-standard);
+}
+
+.scale-range-item:hover {
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow-sm);
 }
 
 .range-label {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-tertiary);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+  font-weight: 500;
 }
 
 .range-value {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-color);
 }
 
 .body-fat-info {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .info-item {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  padding: 12px;
+  gap: 14px;
+  padding: 16px;
   background: var(--bg-primary);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-lighter);
+  transition: all var(--transition-standard);
+}
+
+.info-item:hover {
+  border-color: var(--border-light);
+  box-shadow: var(--shadow-sm);
 }
 
 .info-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-sm);
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  transition: all var(--transition-standard);
 }
 
 .info-icon.low {
-  background: rgba(24, 144, 255, 0.1);
-  color: #1890ff;
+  background: linear-gradient(135deg, rgba(105, 177, 255, 0.15) 0%, rgba(158, 207, 255, 0.08) 100%);
+  color: #69b1ff;
 }
 
 .info-icon.normal {
-  background: rgba(82, 196, 26, 0.1);
-  color: #52c41a;
+  background: linear-gradient(135deg, rgba(82, 201, 169, 0.15) 0%, rgba(131, 217, 194, 0.08) 100%);
+  color: #52c9a9;
 }
 
 .info-icon.high {
-  background: rgba(255, 77, 79, 0.1);
-  color: #ff4d4f;
+  background: linear-gradient(135deg, rgba(255, 183, 77, 0.15) 0%, rgba(255, 204, 128, 0.08) 100%);
+  color: #ffb74d;
 }
 
 .info-icon svg {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
 }
 
 .info-content {
@@ -278,47 +319,61 @@ function hexToRgb(hex) {
 }
 
 .info-title {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .info-desc {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-secondary);
+  line-height: 1.5;
 }
 
 .body-fat-tip {
-  padding: 12px 16px;
-  background: #fffbe6;
-  border-radius: var(--radius-md);
-  border-left: 3px solid #faad14;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, rgba(255, 183, 77, 0.08) 0%, rgba(255, 204, 128, 0.04) 100%);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid #ffb74d;
+  border: 1px solid rgba(255, 183, 77, 0.15);
 }
 
 .tip-text {
-  font-size: 12px;
-  color: #8c6500;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  line-height: 1.5;
 }
 
 @media (max-width: 375px) {
   .body-fat-display {
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
+    padding: 20px;
   }
   
   .fat-value-circle {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
   }
   
   .fat-number {
-    font-size: 28px;
+    font-size: 40px;
+  }
+  
+  .fat-level-badge {
+    padding: 12px 24px;
+    font-size: 18px;
   }
   
   .scale-ranges {
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
+  }
+  
+  .info-item {
+    padding: 12px;
   }
 }
 </style>

@@ -2,7 +2,10 @@ export const BMI_LEVELS = {
   UNDERWEIGHT: {
     level: 'underweight',
     name: '偏瘦',
-    color: '#1890ff',
+    color: '#69b1ff',
+    colorLight: '#9ecfff',
+    gradient: 'linear-gradient(135deg, #69b1ff 0%, #9ecfff 100%)',
+    bgGradient: 'linear-gradient(135deg, rgba(105, 177, 255, 0.15) 0%, rgba(158, 207, 255, 0.08) 100%)',
     min: 0,
     max: 18.5,
     description: '您的体重偏轻，建议适当增加营养摄入'
@@ -10,7 +13,10 @@ export const BMI_LEVELS = {
   NORMAL: {
     level: 'normal',
     name: '标准',
-    color: '#52c41a',
+    color: '#52c9a9',
+    colorLight: '#83d9c2',
+    gradient: 'linear-gradient(135deg, #52c9a9 0%, #83d9c2 100%)',
+    bgGradient: 'linear-gradient(135deg, rgba(82, 201, 169, 0.15) 0%, rgba(131, 217, 194, 0.08) 100%)',
     min: 18.5,
     max: 24,
     description: '恭喜！您的体重在正常范围内，继续保持'
@@ -18,7 +24,10 @@ export const BMI_LEVELS = {
   OVERWEIGHT: {
     level: 'overweight',
     name: '微超重',
-    color: '#faad14',
+    color: '#ffb74d',
+    colorLight: '#ffcc80',
+    gradient: 'linear-gradient(135deg, #ffb74d 0%, #ffcc80 100%)',
+    bgGradient: 'linear-gradient(135deg, rgba(255, 183, 77, 0.15) 0%, rgba(255, 204, 128, 0.08) 100%)',
     min: 24,
     max: 27,
     description: '您的体重略微超标，建议注意饮食和运动'
@@ -26,7 +35,10 @@ export const BMI_LEVELS = {
   OBESITY_L1: {
     level: 'obesity_l1',
     name: '超重',
-    color: '#fa8c16',
+    color: '#ff9e4d',
+    colorLight: '#ffb74d',
+    gradient: 'linear-gradient(135deg, #ff9e4d 0%, #ffb74d 100%)',
+    bgGradient: 'linear-gradient(135deg, rgba(255, 158, 77, 0.15) 0%, rgba(255, 183, 77, 0.08) 100%)',
     min: 27,
     max: 30,
     description: '您的体重超标较多，建议调整生活方式'
@@ -34,7 +46,10 @@ export const BMI_LEVELS = {
   OBESITY_L2: {
     level: 'obesity_l2',
     name: '肥胖',
-    color: '#ff4d4f',
+    color: '#ff7875',
+    colorLight: '#ffa39e',
+    gradient: 'linear-gradient(135deg, #ff7875 0%, #ffa39e 100%)',
+    bgGradient: 'linear-gradient(135deg, rgba(255, 120, 117, 0.15) 0%, rgba(255, 163, 158, 0.08) 100%)',
     min: 30,
     max: 100,
     description: '您的体重严重超标，建议咨询医生进行专业指导'
