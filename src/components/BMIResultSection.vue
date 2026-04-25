@@ -115,17 +115,19 @@ function getMarkerPosition(bmi) {
 
 <style scoped>
 .bmi-result-section {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(246, 255, 237, 0.95) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 255, 249, 0.98) 100%);
+  border: 1px solid rgba(82, 201, 169, 0.1);
 }
 
 .bmi-result-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 20px 0;
-  padding: 16px;
-  background: var(--bg-secondary);
-  border-radius: var(--radius-lg);
+  margin: 28px 0;
+  padding: 24px;
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(82, 201, 169, 0.03) 100%);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(82, 201, 169, 0.08);
 }
 
 .bmi-value-display {
@@ -135,14 +137,17 @@ function getMarkerPosition(bmi) {
 .bmi-value-label {
   font-size: var(--font-size-sm);
   color: var(--text-tertiary);
-  margin-bottom: 4px;
+  margin-bottom: 8px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 .bmi-value-number {
-  font-size: 48px;
-  font-weight: 700;
+  font-size: 72px;
+  font-weight: 800;
   line-height: 1;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  letter-spacing: -2px;
+  text-shadow: 0 4px 12px currentColor;
 }
 
 .bmi-level-display {
@@ -153,51 +158,58 @@ function getMarkerPosition(bmi) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 24px;
-  border-radius: var(--radius-full);
+  padding: 16px 32px;
+  border-radius: var(--radius-xl);
   border: 2px solid;
-  background: rgba(82, 196, 26, 0.1);
+  background: rgba(82, 201, 169, 0.1);
+  box-shadow: 0 4px 16px currentColor;
 }
 
 .bmi-level-text {
-  font-size: var(--font-size-xl);
-  font-weight: 700;
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
 .bmi-result-description {
-  margin-bottom: 20px;
+  margin-bottom: 28px;
 }
 
 .bmi-description-text {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-lg);
   color: var(--text-secondary);
   text-align: center;
-  padding: 12px 16px;
+  padding: 16px 24px;
   background: var(--bg-primary);
-  border-radius: var(--radius-md);
-  border-left: 4px solid var(--primary-light);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--primary-color);
+  font-weight: 500;
+  line-height: 1.7;
 }
 
 .bmi-scale {
-  padding: 16px;
+  padding: 24px;
   background: var(--bg-primary);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-lighter);
 }
 
 .bmi-scale-title {
-  font-size: var(--font-size-sm);
-  font-weight: 600;
+  font-size: var(--font-size-base);
+  font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   text-align: center;
+  letter-spacing: 0.5px;
 }
 
 .bmi-scale-bar {
   position: relative;
-  height: 12px;
+  height: 16px;
   border-radius: var(--radius-full);
   overflow: hidden;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .bmi-scale-segment {
@@ -209,76 +221,84 @@ function getMarkerPosition(bmi) {
 .bmi-scale-segment.underweight {
   left: 0;
   width: 14%;
+  background: linear-gradient(90deg, #69b1ff, #9ecfff);
 }
 
 .bmi-scale-segment.normal {
   left: 14%;
   width: 22%;
+  background: linear-gradient(90deg, #83d9c2, #52c9a9);
 }
 
 .bmi-scale-segment.overweight {
   left: 36%;
   width: 12%;
+  background: linear-gradient(90deg, #ffcc80, #ffb74d);
 }
 
 .bmi-scale-segment.obesity {
   left: 48%;
   width: 52%;
+  background: linear-gradient(90deg, #ffa39e, #ff7875);
 }
 
 .bmi-scale-marker {
   position: absolute;
   top: 50%;
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  border: 3px solid white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 4px solid white;
+  box-shadow: 0 4px 16px currentColor;
   z-index: 10;
+  transition: all var(--transition-bounce);
 }
 
 .bmi-scale-labels {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 12px;
-  padding: 0 8px;
+  margin-bottom: 16px;
+  padding: 0 12px;
 }
 
 .bmi-scale-label-value {
-  font-size: var(--font-size-xs);
-  color: var(--text-tertiary);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  font-weight: 600;
 }
 
 .bmi-scale-legend {
   display: flex;
   justify-content: center;
-  gap: 16px;
+  gap: 20px;
   flex-wrap: wrap;
 }
 
 .bmi-legend-item {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
 .bmi-legend-dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
 }
 
 .bmi-legend-text {
-  font-size: var(--font-size-xs);
-  color: var(--text-tertiary);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 @media (max-width: 375px) {
   .bmi-result-content {
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: 20px;
+    padding: 20px;
   }
   
   .bmi-level-display {
@@ -286,11 +306,19 @@ function getMarkerPosition(bmi) {
   }
   
   .bmi-value-number {
-    font-size: 40px;
+    font-size: 56px;
+  }
+  
+  .bmi-level-badge {
+    padding: 12px 24px;
+  }
+  
+  .bmi-level-text {
+    font-size: var(--font-size-xl);
   }
   
   .bmi-scale {
-    padding: 12px;
+    padding: 16px;
   }
 }
 </style>
